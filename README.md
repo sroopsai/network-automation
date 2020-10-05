@@ -16,13 +16,13 @@
 
 Anywhere --> CIDRBlock(0.0.0.0/0)
 
-1. Bastion/JumpBox
+1. Bastion/JumpBox (PublicSubnet)
 	- Inbound: SSH (Anywhere)
 
-2. WebServers
+2. WebServers (PrivateSubnet)
 	- Inbound: SSH (PublicSubnet)
 	- Inbound: HTTP, HTTPS (PrivateSubnet)
 
-3. HAProxy
+3. HAProxy (PrivateSubnet)
 	- Inbound: SSH (PrivateSubnet)
 	- Inbound: HTTP, HTTPS (Anywhere)
