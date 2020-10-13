@@ -13,6 +13,13 @@
     - name: Install Nginx Server (latest)
       apt:  name=nginx state=present
 
+    - name: start nginx
+      service:
+        name: nginx
+        state:  started
+      become: yes
+      
+
     - name: copy nginx template 
       copy: 
         src:  ./static_site.cfg 
