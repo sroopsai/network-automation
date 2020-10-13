@@ -18,7 +18,7 @@
         name: nginx
         state:  started
       become: yes
-      
+
 
     - name: copy nginx template 
       copy: 
@@ -31,14 +31,24 @@
         src:  /etc/nginx/sites-available/static_site.cfg 
         dest: /etc/nginx/sites-enabled/default
 
+    
+
+    - name: Copy the content of static website.
+      copy: 
+        src:  ./index.php 
+        dest: /var/www/html/index.php
+
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state:  restarted
+      become: yes
+
     - name: Install PHP Packages (latest)
       apt:  name={{ item }} state=present
       with_items:
         - php
         - php-fpm
-
-    - name: copy PHP file from current directory to root directory
-      copy: src=./index.php dest=/var/www/html/index.php
 
     
 
