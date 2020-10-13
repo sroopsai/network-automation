@@ -4,33 +4,21 @@
   become: yes
 
   tasks:
-    - name: Stop Nginx server
-      service: name=nginx state=stopped
-
-    - name: Delete Nginx Server
-      apt:  name=nginx state=absent
 
     - name: Install Nginx Server (latest)
-      apt:  name=nginx state=present
+      apt:  
+        name: nginx 
+        state:  present
 
     - name: start nginx
       service:
         name: nginx
         state:  started
-      become: yes
-
 
     - name: copy nginx template 
       copy: 
-        src:  ./static_site.cfg 
+        src:  ./default
         dest: /etc/nginx/sites-available/default
-
-
-    - name: Create Symlink
-      file: 
-        src:  /etc/nginx/sites-available/static_site.cfg 
-        dest: /etc/nginx/sites-enabled/default
-
     
 
     - name: Copy the content of static website.
@@ -42,18 +30,13 @@
       service:
         name: nginx
         state:  restarted
-      become: yes
 
     - name: Install PHP Packages (latest)
-      apt:  name={{ item }} state=present
-      with_items:
-        - php
-        - php-fpm
+      apt:
+        update_cache: yes
+        name: ['php', 'php-fpm']
+        state:  latest 
 
-    
-
-    #- name: Stop Nginx
-    #  service: name=nginx state=started
     
 - hosts:  haproxy
   become: yes
