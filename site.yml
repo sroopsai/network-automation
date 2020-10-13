@@ -1,0 +1,6 @@
+---
+
+tasks:
+-	name: install python
+	apt: name=python state=present
+
