@@ -1,0 +1,47 @@
+---
+
+- hosts:  webservers
+  become: yes
+
+  tasks:
+    - name: Stop Nginx server
+      service: name=nginx state=stopped
+
+    - name: Delete Nginx Server
+      apt:  name=nginx state=absent
+
+    - name: Install Nginx Server (latest)
+      apt:  name=nginx state=present
+
+    - name: copy nginx template 
+      copy: 
+        src:  ./static_site.cfg 
+        dest: /etc/nginx/sites-available/default
+
+
+    - name: Create Symlink
+      file: 
+        src:  /etc/nginx/sites-available/static_site.cfg 
+        dest: /etc/nginx/sites-enabled/default
+
+    - name: Install PHP Packages (latest)
+      apt:  name={{ item }} state=present
+      with_items:
+        - php
+        - php-fpm
+
+    - name: copy PHP file from current directory to root directory
+      copy: src=./index.php dest=/var/www/html/index.php
+
+    
+
+    #- name: Stop Nginx
+    #  service: name=nginx state=started
+    
+- hosts:  haproxy
+  become: yes
+
+  tasks:
+    - name: Install HAProxy (latest)
+      apt: name=haproxy state=present
+
