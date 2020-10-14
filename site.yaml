@@ -4,7 +4,7 @@
   become: yes
 
   tasks:
-
+    
     - name: Install Nginx Server (latest)
       apt:  
         name: nginx 
@@ -44,4 +44,14 @@
   tasks:
     - name: Install HAProxy (latest)
       apt: name=haproxy state=present
+    
+    - name: Copy HAProxy Configuration File 
+      copy:
+        src: ./haproxy.cfg
+        dest: /etc/haproxy/haproxy.cfg
+
+    - name: Test the configuration
+      command:
+        cmd: haproxy -f /etc/haproxy/haproxy.cfg -c
+      register: HAProxyConfigTesting
 
