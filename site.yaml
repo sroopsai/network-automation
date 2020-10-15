@@ -1,5 +1,6 @@
 ---
 
+
 - hosts:  webservers
   become: yes
   
@@ -41,16 +42,13 @@
 
   
 
-  
-
-    
 - hosts:  haproxy
   become: yes
   
   vars:
-    haproxy_app_name: load-balancer
     haproxy_mode: http
     haproxy_algorithm:  roundrobin
+    haproxy_backend_servers: backend_servers
         
   tasks:
     - name: Install HAProxy (latest)
@@ -62,13 +60,16 @@
       template:
         src:  haproxy.cfg.j2
         dest: /etc/haproxy/haproxy.cfg
-
-
-
+        
     - name: Start HAProxy
       service:  
         name: haproxy
-        service:  running
+        state:  started
+  
+
+    
+
+    
 
 
 
