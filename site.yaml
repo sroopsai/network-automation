@@ -69,13 +69,3 @@
       service:  
         name: haproxy
         state:  started
-  
-
-    
-
-    
-
-
-
-
-
