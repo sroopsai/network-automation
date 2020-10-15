@@ -19,8 +19,8 @@
         state:  started
 
     - name: copy nginx template 
-      copy: 
-        src:  templates/default
+      template: 
+        src:  default
         dest: /etc/nginx/sites-available/default
     
 
