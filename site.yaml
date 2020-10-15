@@ -4,30 +4,33 @@
 - hosts:  webservers
   become: yes
   
-  
+  vars:
+    root: /var/www/html
+    index: index.php
+    nginx_path: /etc/nginx/sites-available
 
   tasks:
     
-    - name: Install Nginx Server (latest)
+    - name: Installation of nginx server (latets)
       apt:  
         name: nginx 
         state:  present
 
-    - name: start nginx
+    - name: start nginx server
       service:
         name: nginx
         state:  started
 
-    - name: copy nginx template 
+    - name: copy nginx default jinja2 template 
       template: 
-        src:  default
-        dest: /etc/nginx/sites-available/default
+        src:  default.j2
+        dest: "{{ nginx_path }}/default"
     
 
-    - name: Copy the content of static website.
+    - name: Copy the content of website 
       copy: 
-        src:  ./index.php 
-        dest: /var/www/html/index.php
+        src:   "./{{index}}"
+        dest: "{{ root }}/{{ index }}"
 
     - name: Restart Nginx
       service:
@@ -49,6 +52,7 @@
     haproxy_mode: http
     haproxy_algorithm:  roundrobin
     haproxy_backend_servers: backend_servers
+    haproxy_path: /etc/haproxy
         
   tasks:
     - name: Install HAProxy (latest)
@@ -59,7 +63,7 @@
     - name: Copy HAProxy Configuration File 
       template:
         src:  haproxy.cfg.j2
-        dest: /etc/haproxy/haproxy.cfg
+        dest: "{{ haproxy_path }}/haproxy.cfg"
         
     - name: Start HAProxy
       service:  
