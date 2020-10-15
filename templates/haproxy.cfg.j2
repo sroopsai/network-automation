@@ -1,27 +1,17 @@
-global
-    daemon
-    maxconn 256
-    user haproxy
-    group haproxy
-
-defaults
-    log  global
-    mode http
-    option httplog
-    option  dontlognull
-    retries 3
-    timeout connect 1000ms
-    timeout client 1000ms
-    timeout server 1000ms
-
-listen {{ haproxy_app_name }} 0.0.0.0:80
+frontend http
+    bind *:80
+    timeout client 5000ms
     mode {{ haproxy_mode }}
-    balance {{ haproxy_algorithm }}
-    option httpclose
-    option forwardfor
-    {%  for server in groups['webservers'] %}
-    server {{ hostvars[server]['inventory_hostname'] }} {{ hostvars[server]['ansible_default_ipv4']['address']}}:80
-    {% endfor %}
+    default_backend {{ haproxy_backend_servers }}
+
+backend {{ haproxy_backend_servers }}
+    timeout connect 10000s
+    timeout server 10000s
+    mode {{ haproxy_mode }}
+{%  for server in groups['webservers'] %}
+server {{ hostvars[server]['inventory_hostname'] }} {{ hostvars[server]['ansible_default_ipv4']['address']}}:80 check
+{% endfor %}
+    
 
 
 
