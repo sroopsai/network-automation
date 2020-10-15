@@ -2,6 +2,8 @@
 
 - hosts:  webservers
   become: yes
+  
+  
 
   tasks:
     
@@ -17,7 +19,7 @@
 
     - name: copy nginx template 
       copy: 
-        src:  ./default
+        src:  templates/default
         dest: /etc/nginx/sites-available/default
     
 
@@ -37,21 +39,38 @@
         name: ['php', 'php-fpm']
         state:  latest 
 
+  
+
+  
+
     
 - hosts:  haproxy
   become: yes
-
+  
+  vars:
+    haproxy_app_name: load-balancer
+    haproxy_mode: http
+    haproxy_algorithm:  roundrobin
+        
   tasks:
     - name: Install HAProxy (latest)
-      apt: name=haproxy state=present
+      apt: 
+        name: haproxy 
+        state:  present
     
     - name: Copy HAProxy Configuration File 
-      copy:
-        src: ./haproxy.cfg
+      template:
+        src:  haproxy.cfg.j2
         dest: /etc/haproxy/haproxy.cfg
 
-    - name: Test the configuration
-      command:
-        cmd: haproxy -f /etc/haproxy/haproxy.cfg -c
-      register: HAProxyConfigTesting
+
+
+    - name: Start HAProxy
+      service:  
+        name: haproxy
+        service:  running
+
+
+
+
 
