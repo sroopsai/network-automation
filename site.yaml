@@ -68,12 +68,8 @@
     - name: Start HAProxy
       service:  
         name: haproxy
-        state:  started
+        state:  restarted
     
-
-- hosts: haproxy
-    
-  tasks:
     - name: Rudimentary test function
       shell: curl 
         {% for host in groups['haproxy'] %}
@@ -81,3 +77,31 @@
         {% endfor %}
       args:
         warn: no
+      register: test
+      
+    - debug:  
+        msg="{{ test.stdout }}"
+
+    - name: Rudimentary test function
+      shell: curl 
+        {% for host in groups['haproxy'] %}
+        {{ hostvars[host]['ansible_default_ipv4']['address']}}
+        {% endfor %}
+      args:
+        warn: no
+      register: test
+      
+    - debug:  
+        msg="{{ test.stdout }}"
+
+    - name: Rudimentary test function
+      shell: curl 
+        {% for host in groups['haproxy'] %}
+        {{ hostvars[host]['ansible_default_ipv4']['address']}}
+        {% endfor %}
+      args:
+        warn: no
+      register: test
+        
+    - debug:  
+        msg="{{ test.stdout }}"
