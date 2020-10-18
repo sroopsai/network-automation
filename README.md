@@ -18,31 +18,6 @@
 (Internet) --->	Bastion
 ```
 
-#### Creation of VPC in AWS
-
-
-1. Create VPC with name NetworkAutomation (CIDR Block: `10.0.0.0/16`)
-2. Create two subnets
-	- PublicSubnet (CIDR Block: `10.0.0.0/27`)
-	- PrivateSubnet (CIDR Block: `10.0.1.0/27`)
-
-#### Security (security in AWS is stateful (which mean if inbound is defined outbound is automatically defined))
-
-
-1. HAProxy Security Group
-
-	- HTTP (Anywhere), HTTPS (Anywhere)
-	- SSH (Public Subnet)
-
-2. Web Servers Security Group
-
-	- HTTP (Private Subnet), HTTPS (Private Subnet)
-	- SSH (Public Subnet)
-
-3. Bastion Security Group
-
-	- SSH (Anywhere)
-
 #### Deployment of nginx into webservers and haproxy load balancer into haproxy server.
 
 1. The deployment of nginx into webservers is automated using Ansible.
