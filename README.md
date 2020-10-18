@@ -1,4 +1,4 @@
-# Network Automation
+# Network Automation :rocket:
 
 ### Aim of the project
 
@@ -11,7 +11,7 @@
 ### Required network to be created
 
 ```
-(Internet) ---> HAProxy	
+(Internet)---> HAProxy	
 		+--->A	|--
 		+--->B	| |---> (Internal Private Network (10.0.1.0/27)	
 		+--->C	|--
