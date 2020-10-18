@@ -16,11 +16,6 @@
         name: nginx 
         state:  present
 
-    - name: start nginx server
-      service:
-        name: nginx
-        state:  started
-
     - name: copy nginx default jinja2 template 
       template: 
         src:  default.j2
@@ -70,38 +65,14 @@
         name: haproxy
         state:  restarted
     
+    - name: Write test function file
+      template:
+        src:  test.sh.j2
+        dest: $HOME/test.sh
     - name: Rudimentary test function
-      shell: curl 
-        {% for host in groups['haproxy'] %}
-        {{ hostvars[host]['ansible_default_ipv4']['address']}}
-        {% endfor %}
+      command:  bash $HOME/test.sh
+      register: test
       args:
         warn: no
-      register: test
-      
-    - debug:  
-        msg="{{ test.stdout }}"
-
-    - name: Rudimentary test function
-      shell: curl 
-        {% for host in groups['haproxy'] %}
-        {{ hostvars[host]['ansible_default_ipv4']['address']}}
-        {% endfor %}
-      args:
-        warn: no
-      register: test
-      
-    - debug:  
-        msg="{{ test.stdout }}"
-
-    - name: Rudimentary test function
-      shell: curl 
-        {% for host in groups['haproxy'] %}
-        {{ hostvars[host]['ansible_default_ipv4']['address']}}
-        {% endfor %}
-      args:
-        warn: no
-      register: test
-        
-    - debug:  
-        msg="{{ test.stdout }}"
+    - debug:
+        msg:  "{{test.stdout}}"
