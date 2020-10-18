@@ -11,11 +11,10 @@
 ### Required network to be created
 
 ```
-(Internet) ---> HAProxy
-				(internal network using private address range; 10.0.1.0/27)
-				+--->A
-				+--->B
-				+--->C
+(Internet) ---> HAProxy	
+		+--->A
+		+--->B
+		+--->C
 (Internet) --->	Bastion
 ```
 
