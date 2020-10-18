@@ -20,11 +20,16 @@
 
 #### Deployment of nginx into webservers and haproxy load balancer into haproxy server.
 
-1. The deployment of nginx into webservers is automated using Ansible.
-2. YAML script (`site.yaml`) will be used by Ansible to deploy the required packages `nginx, php, php-fpm` into webservers specified in the inventory file `hosts`.
-3. Tha same YAML script will be used by Ansible to deploy the required package `haproxy` into load-balancer servers specified in the inventory file `hosts`.
-4. `default` and `haproxy.cfg` are templated using Jinja2 template engine which will render the templates during runtime of ansible-playbook.
-5. Command:
+1. Deploy nginx servers to targeted webserver hosts and required php packages also to targeted webserver hosts.
+2. Configure nginx servers on webserver hosts, restart the servers.
+3. Deploy haproxy to targeted load balancer hosts.
+4. Configuration file for haproxy written initially using Jinja2 templating engine, which renders the dynamic information of hosts. Here, it renders the hosts ip addresses. All templates rendered using Jinja2 templating engine are placed under templates directory.
+5. Restart haproxy servers.
+6. Command to run the playbook.
 ```bash
 ansible-playbook -i hosts site.yaml
 ```
+
+#### Testing 
+1. A test script(test.sh.j2) has been written placed under templates directory. The task for running the test was included at the end of the playbook.
+
