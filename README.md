@@ -12,9 +12,9 @@
 
 ```
 (Internet) ---> HAProxy	
-		+--->A
-		+--->B
-		+--->C
+		+--->A	|--
+		+--->B	| |---> (Internal Private Network (10.0.1.0/27)	
+		+--->C	|--
 (Internet) --->	Bastion
 ```
 
