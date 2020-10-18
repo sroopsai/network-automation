@@ -1,0 +1,6 @@
+for i in {1..3}
+do
+    {% for host in groups['haproxy'] %}
+    curl  {{ hostvars[host]['ansible_default_ipv4']['address']}}
+    {% endfor %}
+done
