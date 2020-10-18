@@ -69,6 +69,7 @@
       template:
         src:  test.sh.j2
         dest: $HOME/test.sh
+        
     - name: Rudimentary test function
       command:  bash $HOME/test.sh
       register: test
